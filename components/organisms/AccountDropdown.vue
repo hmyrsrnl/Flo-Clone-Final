@@ -1,8 +1,6 @@
 <script setup lang="ts">
-/** * Madde 3b: Nuxt 3 otomatik içe aktarma sayesinde ref, onMounted gibi Vue fonksiyonları 
- * için 'import' satırı yazmıyoruz. Bu, hata almanızı engeller.
- */
-const authStore = useAuthStore() // Pinia store kullanımı
+//Nuxt 3 otomatik içe 
+const authStore = useAuthStore() 
 const isOpen = ref(false)
 let closeTimeout: ReturnType<typeof setTimeout> | null = null
 
@@ -21,9 +19,9 @@ const closeDropdown = () => {
 }
 
 const handleLogout = () => {
-  authStore.logout() // İş zekası store içinde
+  authStore.logout() 
   isOpen.value = false
-  navigateTo('/login') // Nuxt 3 yönlendirme fonksiyonu
+  navigateTo('/login') 
 }
 </script>
 

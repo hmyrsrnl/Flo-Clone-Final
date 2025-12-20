@@ -1,25 +1,22 @@
 <template>
   <div class="home">
-    <OrganismsHeroSlider 
-      v-if="productStore.heroSlides.length > 0"
-      :slides="productStore.heroSlides" 
-      :auto-slide="true"
-      :slide-interval="5000"
-    />
+    <OrganismsHeroSlider v-if="productStore.heroSlides.length > 0" :slides="productStore.heroSlides" :auto-slide="true"
+      :slide-interval="5000" />
     <OrganismsCampaignSection />
   </div>
 </template>
 
 <script setup lang="ts">
-// Madde 3b: Importlar sadece 'use' ile başlamalı
+definePageMeta({
+  layout: 'default'
+})
 const productStore = useProductStore()
-
-// Verileri Firebase'den çekmek için action'ı tetikle
 onMounted(async () => {
-  await productStore.fetchSliderData() // Firebase 'campaign' tablosundan çeker
+  await productStore.fetchSliderData() 
   await productStore.fetchCampaigns()
 })
 </script>
+
 <style scoped>
 .home {
   flex: 1;
@@ -58,14 +55,14 @@ onMounted(async () => {
 
 .cta-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
   .hero {
     padding: 60px 20px;
   }
-  
+
   .hero h1 {
     font-size: 36px;
   }
@@ -75,7 +72,7 @@ onMounted(async () => {
   .hero {
     padding: 40px 20px;
   }
-  
+
   .hero h1 {
     font-size: 28px;
   }

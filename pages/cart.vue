@@ -1,20 +1,16 @@
 <script setup lang="ts">
-// 1. Sadece 'use' ile başlayan importlar (Madde 3b)
 const cartStore = useCartStore()
 const productStore = useProductStore()
 const orderStore = useOrderStore()
 
-// 2. Verileri başlatma
 onMounted(() => {
-  productStore.fetchProducts() // Firebase'den indirimli ürünleri çek
+  productStore.fetchProducts() 
 })
-
-// 3. Sayfa içi fonksiyonlar (Sadece store'u tetikler)
 const handleCheckout = async () => {
-  const isSuccess = await cartStore.checkout() // Store'daki checkout'u çağır
+  const isSuccess = await cartStore.checkout() 
   if (isSuccess) {
     alert('Siparişiniz başarıyla alındı!')
-    navigateTo('/') // Siparişten sonra anasayfaya dön
+    navigateTo('/') 
   }
 }
 </script>
@@ -37,7 +33,6 @@ const handleCheckout = async () => {
             if (item) cartStore.removeFromCart(item.id, item.selectedSize);
           }"
           @update-size="(payload: any) => {
-            // Dropdown'dan gelen yeni bedeni Store'a yazar
             cartStore.updateSize(payload.itemId, payload.size);
           }" 
         />
@@ -45,11 +40,9 @@ const handleCheckout = async () => {
         <OrganismsSpecialDiscounts 
           :products="productStore.products.slice(0, 4)" 
           @add-to-cart="(product: any) => {
-            // Seçili bedenle sepete ekle
             cartStore.addToCart(product, product.selectedSize || '38');
           }"
           @size-change="(payload: any) => {
-            // Slider içindeki ürünün seçili bedenini store'da anlık güncelle
             const product = productStore.products.find(p => p.id === payload.productId);
             if (product) product.selectedSize = payload.size;
           }"

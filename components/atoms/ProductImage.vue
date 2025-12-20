@@ -1,21 +1,14 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Görsel URL'si, ürün adı ve eklenme sayısı için tipleri tanımlıyoruz.
- */
+//TypeScript interface kullanımı.
 interface Props {
   imageUrl: string;
   productName: string;
   addedCount?: number;
 }
 
-// Propsları varsayılan değerlerle tanımlıyoruz
 withDefaults(defineProps<Props>(), {
   addedCount: 0
 });
-
-/** * Madde 3b: Sadece Nuxt/Vue yapıları.
- * Manuel importları (ref, onMounted vb. gerekirse) sildik, Nuxt otomatik tanır.
- */
 </script>
 
 <template>

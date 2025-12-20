@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript Interface kullanımı. 
- * Beden listesi ve seçili beden bilgisini tipleriyle tanımlıyoruz.
- */
+//TypeScript Interface kullanımı. 
 interface Props {
   sizes: (string | number)[];
   selectedSize?: string | number | null;
@@ -9,8 +7,7 @@ interface Props {
 
 defineProps<Props>();
 
-/** * Madde 3b: Nuxt 3 standartlarına uygun event tanımı.
- */
+//Nuxt 3 standartlarına uygun event
 const emit = defineEmits<{
   (e: 'size-change', value: string | number): void
 }>();

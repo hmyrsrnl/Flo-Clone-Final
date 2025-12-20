@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/**
- * Madde 3a: Interface kullanımı.
- */
+//Interface kullanımı.
 interface LoginData {
   email: string;
   password: string;
@@ -10,7 +8,7 @@ interface LoginData {
 const activeTab = ref('login')
 const loginData = ref<LoginData>({
   email: '',
-  password: '' // BAŞLANGIÇ DEĞERİ EKLE
+  password: '' 
 })
 
 const emit = defineEmits<{

@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-/** * Madde 3a: TypeScript interface kullanımı.
- * Değerlendirme puanı ve yorum sayısını tip güvenli hale getiriyoruz.
- */
+//TypeScript interface kullanımı.
 interface Props {
   rating: number;
   reviewCount: number;
@@ -11,9 +9,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-/** * Madde 3b: Sadece Nuxt/Vue yapıları.
- * Matematiksel işlemleri doğrudan template içinde veya computed ile yapabiliriz.
- */
+//Sadece Nuxt/Vue yapıları.
 const fullStars = computed(() => Math.floor(props.rating));
 </script>
 

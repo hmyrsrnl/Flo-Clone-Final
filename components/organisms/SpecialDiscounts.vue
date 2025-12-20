@@ -12,7 +12,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const currentSlide = ref(0);
-// Hangi ürünün beden dropdown'ının açık olduğunu takip eder
 const activeDropdownId = ref<string | number | null>(null);
 
 const emit = defineEmits<{
@@ -20,10 +19,9 @@ const emit = defineEmits<{
   (e: 'size-change', payload: { productId: string | number, size: string | number }): void;
 }>();
 
-// Sadece ilk 4 ürünü alacak ve slaytlara bölecek
 const chunkedProducts = computed(() => {
   const chunks = [];
-  const limitedProducts = props.products.slice(0, 4); // Sadece 4 ürün sınırı
+  const limitedProducts = props.products.slice(0, 4); 
 
   for (let i = 0; i < limitedProducts.length; i += props.itemsPerSlide) {
     chunks.push(limitedProducts.slice(i, i + props.itemsPerSlide));
@@ -31,7 +29,6 @@ const chunkedProducts = computed(() => {
   return chunks;
 });
 
-// Toplam sayfa sayısı artık 4 ürün üzerinden 2 olacaktır (1/2, 2/2)
 const totalSlides = computed(() => chunkedProducts.value.length);
 
 const formatPrice = (price: number | string) => {
@@ -40,7 +37,6 @@ const formatPrice = (price: number | string) => {
   }).format(Number(price)) + ' TL';
 };
 
-// Beden değiştiğinde hem emit yapar hem menüyü kapatır
 const handleSizeChange = (productId: string | number, size: string | number) => {
   emit('size-change', { productId, size });
   activeDropdownId.value = null;

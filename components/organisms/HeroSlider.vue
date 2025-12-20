@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Slider verileri için tip tanımı yapıyoruz.
- */
+//TypeScript interface kullanımı.
 interface ISlide {
   imageUrl: string;
   link?: string;
@@ -17,9 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
   autoplayInterval: 5000
 });
 
-/** * Madde 3b: Nuxt 3 auto-import sayesinde ref, computed, onMounted gibi
- * Vue fonksiyonları için manuel import yazmıyoruz.
- */
+
 const currentIndex = ref(0);
 let intervalId: ReturnType<typeof setInterval> | null = null;
 
@@ -53,7 +49,6 @@ const goToIndex = (index: number) => {
 
 const goTo = (link?: string) => {
   if (link) {
-    // Madde 3b: Nuxt 3 standart yönlendirme
     navigateTo(link);
   }
 };

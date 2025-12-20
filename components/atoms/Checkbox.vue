@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Propsları 'defineProps' ile tanımlıyoruz.
- */
+//TypeScript interface
 interface Props {
   modelValue?: boolean;
   disabled?: boolean;
@@ -12,9 +10,7 @@ withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
-/** * Madde 3b: Sadece Nuxt/Vue yapıları.
- * v-model desteği için update emitini tanımlıyoruz.
- */
+//Sadece Nuxt/Vue yapıları.
 const emit = defineEmits<{
   (e: 'update:modelValue', value: boolean): void
 }>();

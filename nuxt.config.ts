@@ -1,13 +1,10 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   modules: ['@pinia/nuxt'],
-
-  // Uygulama çalışma zamanı yapılandırması (Environment Variables)
   runtimeConfig: {
     public: {
-      // .env dosyasındaki değerleri buraya bağlıyoruz
+      // .env dosyasındaki değerler
       firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
       firebaseAuthDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
       firebaseProjectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -33,18 +30,15 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
       ],
       link: [
-        // FontAwesome
         { 
           rel: 'stylesheet', 
           href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' 
         },
-        // Favicon (Tarayıcı Sekme İkonu)
         { 
           rel: 'icon', 
           type: 'image/svg+xml', 
           href: '/logo.svg' 
         },
-        // Fonts
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { 

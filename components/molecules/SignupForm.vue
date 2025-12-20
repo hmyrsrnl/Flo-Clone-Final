@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-/** * Madde 3b: Nuxt 3 otomatik içe aktarma özelliği sayesinde ref ve computed import edilmez.
- * Madde 3a: Form verileri için TypeScript tip tanımı yapıyoruz.
- */
+//Nuxt 3 otomatik içe aktarma 
+//Form verileri için TypeScript tip tanımı 
 const form = ref({
   phonePart1: '',
   phonePart2: '',
@@ -16,16 +15,15 @@ const form = ref({
 
 const activeTab = ref('register');
 
-/** * Madde 3a: Form geçerlilik kontrolünü computed ile yönetiyoruz.
- */
+//Form geçerlilik kontrolü
 const isFormValid = computed(() => {
   const valid = !!(form.value.phonePart1 && form.value.phonePart2 && form.value.email && 
                  form.value.password && form.value.gender && form.value.kvkk1 && form.value.kvkk2);
-  console.log("Form Geçerli mi?:", valid, form.value); // Konsolda eksik alanı görebilirsin
+  console.log("Form Geçerli mi?:", valid, form.value); 
   return valid;
 });
 
-// Madde 3a: Emit tanımlarını tip güvenli hale getiriyoruz.
+//Emit tanımlarını tip güvenli hale getir
 const emit = defineEmits<{
   (e: 'submit', data: any): void
 }>();
@@ -35,7 +33,6 @@ const handleSubmit = () => {
     const fullPhone = `0 (${form.value.phonePart1}) ${form.value.phonePart2}`;
     emit('submit', { ...form.value, phone: fullPhone });
   } else {
-    // Hangi alanın boş olduğunu bulmak için:
     alert("Lütfen tüm alanları (Cinsiyet ve KVKK dahil) doldurunuz!");
     console.log("Form Durumu:", form.value);
   }

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-/** * Madde 3a & 3b: Nuxt 3 Standartları ve TypeScript.
- */
 const route = useRoute()
 const router = useRouter();
 const productStore = useProductStore()
@@ -8,21 +6,15 @@ const cartStore = useCartStore()
 
 const selectedSize = ref<string | number | null>(null)
 
-// Sayfa yüklendiğinde Firestore'dan veriyi çekiyoruz
 onMounted(async () => {
   const productId = route.params.id as string
   await productStore.fetchProductById(productId)
 })
 
 const handleAddToCart = async () => {
-  // 1. Kontrol: Ürün ve beden seçili mi?
   if (productStore.currentProduct && selectedSize.value) {
-    console.log("Sepete ekleniyor..."); // Debug için ekle
-
-    // 2. Store aksiyonunu bekle (Aksi takdirde sepet boş gider)
+    console.log("Sepete ekleniyor..."); 
     await cartStore.addToCart(productStore.currentProduct, selectedSize.value);
-
-    // 3. Yönlendirme (navigateTo Nuxt 3 standartıdır)
     router.push('/cart');
   } else {
     alert("Lütfen önce bir beden seçin!");
@@ -181,9 +173,6 @@ const handleAddToCart = async () => {
 
 
 <style scoped>
-
-
-/* Yeni bölümler için özel stiller - Mevcutları bozmaz */
 .extra-info-container {
   margin-top: 25px;
   border-top: 1px solid #f0f0f0;
@@ -338,7 +327,6 @@ const handleAddToCart = async () => {
   object-fit: contain;
 }
 
-/* Seçili olan rengin etrafındaki turuncu vurgu */
 .color-variant-box.selected {
   border: 2px solid #ff6000;
   box-shadow: 0 0 4px rgba(255, 96, 0, 0.1);

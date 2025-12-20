@@ -1,6 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface ile props tanımı.
- */
+//TypeScript interface ile props
 interface Props {
   title?: string;
 }
@@ -16,6 +15,7 @@ defineProps<Props>();
     </div>
   </div>
 </template>
+
 <style scoped>
 .menu-section {
   margin-bottom: 24px;

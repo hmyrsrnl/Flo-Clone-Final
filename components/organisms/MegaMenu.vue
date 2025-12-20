@@ -1,167 +1,116 @@
-<script setup lang="ts">
-// Madde 3a: Gelen verinin tipini tanımlayın
-interface MenuItem {
-  title: string;
-  items: string[];
-}
-
-defineProps<{
-  title: string;
-  menuData: MenuItem[];
-}>();
-</script>
-
 <template>
-  <div class="mega-menu-item">
-    <span class="menu-title">{{ title }}</span>
-    <div class="mega-menu-dropdown">
-      <div v-for="group in menuData" :key="group.title" class="menu-group">
-        <h4>{{ group.title }}</h4>
-        <ul>
-          <li v-for="item in group.items" :key="item">{{ item }}</li>
-        </ul>
+  <div 
+    class="mega-menu" 
+    @mouseenter="openMenu"
+    @mouseleave="closeMenu"
+  >
+    <div class="menu-trigger">
+      <slot name="trigger">
+        <span>{{ title }}</span>
+      </slot>
+    </div>
+
+    <div 
+      v-if="isOpen && menuData" 
+      class="mega-menu-content"
+    >
+      <div class="menu-grid">
+        <div 
+          class="menu-column" 
+          v-for="(group, index) in menuData" 
+          :key="`group-${index}`"
+          :class="{ 'brands-section': group.title === 'Markalar' || group.title === 'Popüler Markalar' }"
+        >
+          <h4 class="column-title">{{ group.title }}</h4>
+          
+          <div v-if="group.title !== 'Markalar'" class="column-items">
+            <NuxtLink 
+              v-for="(item, itemIndex) in group.items" 
+              :key="itemIndex"
+              :to="`/category/${item.toLowerCase()}`" 
+              class="menu-item"
+            >
+              {{ item }}
+            </NuxtLink>
+          </div>
+
+          <div v-else class="brands-grid">
+            <NuxtLink 
+              v-for="(brand, brandIndex) in group.items" 
+              :key="brandIndex"
+              :to="`/brand/${brand.toLowerCase()}`"
+              class="brand-item"
+            >
+              {{ brand }}
+            </NuxtLink>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
+<script setup>
+const props = defineProps({
+  title: { type: String, required: true },
+  menuData: { type: Array, required: true } 
+})
+
+const isOpen = ref(false)
+let closeTimeout = null
+
+const openMenu = () => {
+  if (closeTimeout) clearTimeout(closeTimeout)
+  isOpen.value = true
+}
+
+const closeMenu = () => {
+  closeTimeout = setTimeout(() => {
+    isOpen.value = false
+  }, 150)
+}
+</script>
+
 <style scoped>
-.mega-menu {
-  position: relative;
-  display: inline-block;
-}
 
-.menu-trigger {
-  padding: 8px 16px;
-  cursor: pointer;
-  color: #333;
-  font-weight: 600;
-  font-size: 15px;
-  transition: color 0.2s;
-}
-
-.menu-trigger:hover {
-  color: #FF6600;
-}
-
+.mega-menu { position: relative; display: inline-block; }
 .mega-menu-content {
   position: absolute;
   top: 100%;
-  left: 0;
+  left: -150px; 
   background: white;
   border: 1px solid #e8e8e8;
-  border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-  width: calc(1200px - 40px);
-  min-width: 1000px;
+  width: 1000px;
   z-index: 1000;
   padding: 24px;
-  animation: fadeIn 0.2s ease;
-  text-align: left; 
+  display: block;
 }
-.mega-menu-dropdown {
-  display: none; /* Varsayılan olarak gizle */
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 800px; /* Genişliği sabitle ki yazılar üst üste binmesin */
-  background: white;
-  z-index: 999;
-  display: flex; /* İçerikleri yan yana diz */
-  gap: 30px;
-  padding: 20px;
-  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-  visibility: hidden; /* Hover yokken gizli tut */
-  opacity: 0;
-}
-
-.mega-menu-container:hover .mega-menu-dropdown {
-  visibility: visible;
-  opacity: 1;
-  display: flex; /* Üzerine gelince göster */
-}
-
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr); 
   gap: 32px;
 }
-
-.menu-column {
-  display: flex;
-  flex-direction: column;
-}
-
 .column-title {
   font-size: 14px;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
   border-bottom: 2px solid #FF6600;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
 }
-
-.column-items {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.menu-item {
-  color: #666;
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.2s;
-  padding: 4px 0;
-  line-height: 1.4;
-}
-
-.menu-item:hover {
-  color: #FF6600;
-}
-
-.brands-section {
-  grid-column: span 2;
-}
+.menu-item { display: block; padding: 5px 0; color: #666; font-size: 14px; }
+.menu-item:hover { color: #FF6600; }
 
 .brands-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; 
-  grid-auto-rows: auto;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
-
 .brand-item {
-  color: #666;
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.2s;
-  padding: 8px 12px;
   background: #f8f8f8;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
+  padding: 8px;
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 36px;
-}
-
-.brand-item:hover {
-  color: #FF6600;
-  background: #fff5f0;
-  border-color: #FF6600;
-  transform: translateY(-1px);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  border-radius: 4px;
+  font-size: 12px;
 }
 </style>

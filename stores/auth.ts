@@ -22,9 +22,7 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   actions: {
-    /**
-     * 🔐 Auth durumunu başlatır (Madde 2d uyumlu)
-     */
+    //Auth durumunu başlatır 
     initAuth() {
       if (!process.client || this.initialized) return
 
@@ -36,9 +34,7 @@ export const useAuthStore = defineStore('auth', {
       })
     },
 
-    /**
-     * 🔑 Giriş Yap (Madde 1a & 2a uyumlu)
-     */
+    //Giriş Yap 
     async login(credentials: { email: string; password?: string }) {
       if (!process.client) return false
       const { $auth, $db } = useNuxtApp()
@@ -47,8 +43,6 @@ export const useAuthStore = defineStore('auth', {
       try {
         const userCredential = await signInWithEmailAndPassword($auth as any, credentials.email, credentials.password || '')
         this.user = userCredential.user
-
-        // Madde 1b: Giriş yapınca Firestore'daki kullanıcı verilerini çek ve state'e at
         const { getDoc, doc } = await import('firebase/firestore')
         const docRef = doc($db as any, 'users', this.user.uid)
         const docSnap = await getDoc(docRef)
@@ -67,9 +61,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    /**
-     * 🌐 Sosyal Medya Girişi (Madde 2a uyumlu)
-     */
+    //Sosyal Medya Girişi 
     async socialLogin(providerName: string) {
       if (!process.client) return false
 
@@ -89,9 +81,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    /**
-     * 📝 Yeni Üye Kaydı (Madde 1b - Veri Yazma uyumlu)
-     */
+    //Yeni Üye Kaydı
     async register(userData: any) {
       this.loading = true;
       const { $db, $auth } = useNuxtApp();
@@ -100,7 +90,7 @@ export const useAuthStore = defineStore('auth', {
         const userCredential = await createUserWithEmailAndPassword($auth as any, userData.email, userData.password);
         const user = userCredential.user;
 
-        // Madde 1b: Firestore'a veri yazma işlemi
+        //Firestore'a veri yazma işlemi
         await setDoc(doc($db as any, 'users', user.uid), {
           uid: user.uid,
           email: userData.email,
@@ -110,19 +100,17 @@ export const useAuthStore = defineStore('auth', {
           gender: userData.gender || '',
           createdAt: new Date().toISOString()
         });
-
         this.user = user;
         return true;
       } catch (error: any) {
-        alert("Firebase Hatası: " + error.message); // Hatayı görmek için alert ekledik
+        alert("Firebase Hatası: " + error.message); 
         return false;
       } finally {
         this.loading = false;
       }
     },
-    /**
-     * 🚪 Çıkış Yap
-     */
+    
+    //Çıkış Yap
     async logout() {
       if (!process.client) return
 
@@ -132,12 +120,11 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       this.userProfile = null
     },
-    /**
- * 📥 Firestore'dan kullanıcı profilini çeker (Madde 1b uyumlu)
- */
+
+    //Firestore'dan kullanıcı profilini çeker
     async fetchUserProfile() {
       const { $db } = useNuxtApp()
-      if (!this.user) return
+      if (!this.user?.uid) return
 
       try {
         const { getDoc, doc } = await import('firebase/firestore')
@@ -152,9 +139,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    /**
-     * 📝 Mevcut kullanıcı profilini günceller (Madde 1b uyumlu)
-     */
+    //Mevcut kullanıcı profilini günceller 
     async updateUserProfile() {
       const { $db } = useNuxtApp()
       if (!this.user || !this.userProfile) return false

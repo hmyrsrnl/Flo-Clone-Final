@@ -1,13 +1,15 @@
 <script setup lang="ts">
-/** * Madde 3b: Sadece 'use' ile başlayan importlar.
- * onMounted gibi Vue core fonksiyonları Nuxt 3'te otomatik import edilir.
- */
 const authStore = useAuthStore()
 
-// Sayfa yüklendiğinde mevcut kullanıcı verilerini Firestore'dan çek
 onMounted(async () => {
   await authStore.fetchUserProfile()
 })
+
+watch(() => authStore.user, async (newUser) => {
+  if (newUser) {
+    await authStore.fetchUserProfile()
+  }
+}, { immediate: true }) 
 
 const handleUpdateProfile = async () => {
   const success = await authStore.updateUserProfile()
@@ -18,7 +20,7 @@ const handleUpdateProfile = async () => {
 
 const handleLogout = () => {
   authStore.logout()
-  navigateTo('/login') // Madde 2a: Çıkış sonrası yönlendirme
+  navigateTo('/login') 
 }
 </script>
 

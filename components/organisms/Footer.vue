@@ -1,7 +1,4 @@
 <script setup lang="ts">
-/** * Madde 3b: Nuxt 3 otomatik importlar sayesinde script kısmı temizdir.
- * Yazılar ve tasarım eski projenle birebir aynı bırakılmıştır.
- */
 const currentYear = new Date().getFullYear();
 </script>
 

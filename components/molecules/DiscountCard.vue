@@ -1,8 +1,6 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Ürün verisini merkezi tip dosyasından (IProduct) alıyoruz.
- */
-  import type { IProduct } from '~/types'
+//TypeScript interface kullanımı.
+import type { IProduct } from '~/types'
 import { useCartStore } from '../../stores/cart';
 
 interface Props {
@@ -11,15 +9,13 @@ interface Props {
 
 const props = defineProps<Props>();
 
-/** * Madde 3b: Sadece Nuxt/Vue yapıları.
- * Fiyat formatlama işlemini computed ile yönetiyoruz.
- */
+//Sadece Nuxt/Vue yapıları.
 const formatPrice = (p: number | string) => {
   const n = typeof p === 'string' ? parseFloat(p) : p;
   return new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2 }).format(n) + ' TL';
 };
 
-const cartStore = useCartStore(); // Sepet işlemleri için
+const cartStore = useCartStore(); 
 </script>
 
 <template>

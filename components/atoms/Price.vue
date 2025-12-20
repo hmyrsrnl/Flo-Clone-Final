@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-
-/** * Madde 3a: TypeScript interface kullanımı.
- * Price hem number hem string (Firestore'dan gelen veriye göre) olabilir.
- */
+//TypeScript interface kullanımı.
 interface Props {
   price: number | string;
   features?: string[];
@@ -11,21 +7,12 @@ interface Props {
 
 const props = defineProps<Props>();
 
-/** * Madde 3b: Sadece 'use' veya Vue/Nuxt fonksiyonları.
- * Fiyat biçimlendirme mantığını computed ile yönetiyoruz.
- */
+//Sadece 'use' veya Vue/Nuxt fonksiyonları
 const formattedPrice = computed(() => {
-  // 1. Gelen verideki gizli çift tırnakları ve boşlukları temizle
   const cleanPrice = props.price?.toString().replace(/"/g, '').trim();
-
-  // 2. Eğer veri zaten 'TL' içeriyorsa direkt göster
-  if (cleanPrice.includes('TL')) return cleanPrice;
-
-  // 3. Sayıya çevir ve NaN kontrolü yap
+  if (cleanPrice.includes('TL')) return cleanPrice
   const numericPrice = Number(cleanPrice);
   if (isNaN(numericPrice) || !cleanPrice) return '0,00 TL';
-
-  // 4. Standart Türkçe formatında döndür
   return new Intl.NumberFormat('tr-TR', { 
     minimumFractionDigits: 2,
     maximumFractionDigits: 2 

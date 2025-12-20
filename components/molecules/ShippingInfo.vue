@@ -1,6 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- */
+//TypeScript interface kullanımı.
 interface Props {
   title: string;
   description: string;
@@ -10,9 +9,8 @@ interface Props {
 
 const props = defineProps<Props>();
 
-/** * Madde 3b: Sadece Nuxt/Vue yapıları.
- * Tip uyuşmazlığı hatasını (image_842c2a.png) önlemek için beden tipini esnek tutuyoruz.
- */
+//Sadece Nuxt/Vue yapıları.
+ 
 const selectedSize = ref<string | number>('37');
 const availableSizes = ['36', '37', '38', '39', '40', '41'];
 </script>

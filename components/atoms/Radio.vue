@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-/** * Madde 3a: TypeScript interface kullanımı.
- * Değerlerin tipi string, number veya boolean olabilir.
- */
+//TypeScript interface kullanımı
 interface Props {
   value: string | number | boolean;
   modelValue?: string | number | boolean;
@@ -15,9 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false
 });
 
-/** * Madde 3b: Sadece Nuxt/Vue yapıları.
- * v-model desteği ve kontrol mantığı.
- */
+//Sadece Nuxt/Vue yapıları.
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string | number | boolean): void
 }>();

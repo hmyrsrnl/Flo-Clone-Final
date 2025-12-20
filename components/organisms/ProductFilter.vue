@@ -1,6 +1,4 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- */
 interface Category {
   label: string;
   value: string;
@@ -21,9 +19,8 @@ const selectedFilters = reactive({
 });
 
 const sizes = ['36', '37', '38', '39', '40', '41', '42', '43'];
-const brands = ['Lumberjack', 'Nike', 'Adidas', 'Puma', 'Kinetix'];
+const brands = ['Lumberjack', 'Nike', 'Adidas', 'Puma', 'Kinetix', 'Reebok', 'Butigo'];
 
-// Emit tanımı
 const emit = defineEmits<{
   (e: 'filter-change', filters: typeof selectedFilters): void
 }>();
@@ -102,7 +99,6 @@ const clearAllFilters = () => {
 </template>
 
 <style scoped>
-/* Mevcut CSS yapına eklenen şık düzenlemeler */
 .product-filter {
   background: white;
   padding: 20px;

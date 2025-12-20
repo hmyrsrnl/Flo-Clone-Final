@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <OrganismsAppHeader />
-    <main>
+  <div class="default-layout">
+    <OrganismsHeader /> <main>
       <slot /> </main>
-    <OrganismsAppFooter />
-  </div>
+    <OrganismsFooter /> </div>
 </template>

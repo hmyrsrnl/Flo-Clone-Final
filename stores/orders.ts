@@ -7,7 +7,7 @@ export const useOrderStore = defineStore('orders', {
     async createOrder(cartData: any, total: number) {
       const { $db } = useNuxtApp()
       try {
-        // Madde 1b: Firestore'a veri yazma işlemi
+        //Firestore'a veri yazma işlemi
         await addDoc(collection($db as any, 'orders'), {
           items: cartData,
           totalPrice: total,

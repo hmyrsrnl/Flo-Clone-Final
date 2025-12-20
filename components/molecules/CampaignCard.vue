@@ -1,5 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface tanımı. */
+//TypeScript interface tanımı.
 interface Props {
   imageUrl: string;
   height?: string;
@@ -7,9 +7,6 @@ interface Props {
   backgroundSize?: 'cover' | 'contain' | string;
 }
 
-/** * KRİTİK DÜZELTME: defineProps sonucunu bir değişkene atamalı 
- * veya doğrudan template'in erişebileceği şekilde bırakmalısınız.
- */
 const props = withDefaults(defineProps<Props>(), {
   height: '200px',
   backgroundSize: 'cover',
@@ -29,7 +26,6 @@ const handleInternalClick = () => {
   <div 
     class="campaign-card"
     :style="{ 
-      // Artık 'props.imageUrl' şeklinde güvenle erişebilirsiniz
       backgroundImage: `url('${props.imageUrl}')`, 
       height: props.height,
       backgroundSize: props.backgroundSize

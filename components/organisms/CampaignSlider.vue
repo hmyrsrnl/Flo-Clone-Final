@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Kampanya nesnesinin sahip olması gereken alanları tanımlıyoruz.
- */
+//Madde 3a: TypeScript interface kullanımı.
 interface ICampaign {
   image: string;
   title?: string;
@@ -20,8 +18,6 @@ const props = withDefaults(defineProps<Props>(), {
   slideInterval: 5000
 });
 
-/** * Madde 3b: Nuxt 3 otomatik içe aktarma sayesinde ref ve onMounted için import gerekmez.
- */
 const currentSlide = ref(0);
 const autoSlideInterval = ref<ReturnType<typeof setInterval> | null>(null);
 
@@ -52,7 +48,6 @@ const pauseAutoSlide = () => {
   }
 };
 
-// Yaşam döngüsü kancaları otomatik tanınır.
 onMounted(() => startAutoSlide());
 onBeforeUnmount(() => pauseAutoSlide());
 </script>

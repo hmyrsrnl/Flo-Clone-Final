@@ -1,10 +1,8 @@
 <template>
   <div>
-    <OrganismsHeader />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
-    <OrganismsFooter />
   </div>
 </template>
 

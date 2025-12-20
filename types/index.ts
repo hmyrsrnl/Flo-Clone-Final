@@ -1,4 +1,3 @@
-// types/index.ts
 export interface IColorVariant {
   productId: string; 
   image: string;     
@@ -25,7 +24,7 @@ export interface IProduct {
   rating: number;     
   reviewCount: number;
   addedCount?: number;features?: {
-    [key: string]: string; // Dinamik anahtar-değer çiftleri (Materyal: Deri gibi)
+    [key: string]: string; 
   };
 }
 
@@ -79,4 +78,11 @@ export interface IRegisterData {
   lastName: string;
   phone?: string;
   gender?: string;
+}
+
+export interface IMenu {
+  categories: {
+    title: string;
+    items: string[];
+  }[];
 }

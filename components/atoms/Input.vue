@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Propsları 'defineProps' ile tanımlayarak input tipini ve model değerini kontrol ediyoruz.
- */
+//TypeScript interface 
 interface Props {
   type?: string;
   placeholder?: string;
@@ -14,9 +12,7 @@ withDefaults(defineProps<Props>(), {
   modelValue: ''
 });
 
-/** * Madde 3b: Sadece Nuxt/Vue yapıları.
- * v-model (update:modelValue) için emit tanımı.
- */
+//Sadece Nuxt/Vue 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>();

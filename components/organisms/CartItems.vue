@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * types/index.ts içindeki ICartItem tipini import ediyoruz.
- */
+//TypeScript interface kullanımı.
 import type { ICartItem } from '~/types'
 
 interface Props {
@@ -12,9 +10,7 @@ const props = withDefaults(defineProps<Props>(), {
   items: () => []
 });
 
-/** * Madde 3b: Nuxt 3 otomatik içe aktarma.
- * Emit tanımlarını tip güvenli hale getiriyoruz.
- */
+//Nuxt 3 otomatik içe aktarma.
 const emit = defineEmits<{
   (e: 'update-quantity', payload: { itemId: string | number, type: 'increase' | 'decrease' }): void;
   (e: 'remove-item', itemId: string | number): void;
@@ -22,7 +18,6 @@ const emit = defineEmits<{
   (e: 'update-size', payload: { itemId: string | number, size: string | number }): void;
 }>();
 
-// Hata 7006: Parametre tipini açıkça belirterek 'any' hatasını çözüyoruz.
 const handleSizeChange = (itemId: string | number, newSize: string | number) => {
   emit('update-size', { itemId, size: newSize });
 };
@@ -43,7 +38,6 @@ const toggleDropdown = (itemId: string | number) => {
   }
 };
 
-// Dışarı tıklandığında kapanması için (Opsiyonel ama iyi olur)
 const closeDropdown = () => { activeDropdownId.value = null; };
 </script>
 
@@ -117,14 +111,11 @@ const closeDropdown = () => { activeDropdownId.value = null; };
 </template>
 
 <style scoped>
-/* Dropdown Konteynır */
 .custom-dropdown {
   position: relative;
   width: 120px;
   user-select: none;
 }
-
-/* Üst Başlık */
 .dropdown-header {
   display: flex;
   justify-content: space-between;
@@ -138,7 +129,6 @@ const closeDropdown = () => { activeDropdownId.value = null; };
 
 .selected-label {
   color: #ff6000;
-  /* FLO Turuncusu */
   font-weight: 600;
   font-size: 14px;
 }
@@ -147,7 +137,6 @@ const closeDropdown = () => { activeDropdownId.value = null; };
   transform: rotate(180deg);
 }
 
-/* Açılır Liste */
 .dropdown-list {
   position: absolute;
   top: 105%;
@@ -170,7 +159,6 @@ const closeDropdown = () => { activeDropdownId.value = null; };
   transition: all 0.2s;
   cursor: pointer;
   text-align: center;
-  /* Dikey liste görünümü */
 }
 
 .dropdown-list li:hover {
@@ -184,7 +172,6 @@ const closeDropdown = () => { activeDropdownId.value = null; };
   background: #fff5f0;
 }
 
-/* Animasyon */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s;

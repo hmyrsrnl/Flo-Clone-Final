@@ -1,20 +1,16 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Aktiflik durumu ve index numarasını tip güvenli hale getiriyoruz.
- */
+//TypeScript interface kullanımı.
 interface Props {
   active?: boolean;
   index: number;
 }
 
-// Varsayılan değerlerle birlikte props tanımlama
+// Varsayılan değerlerle birlikte props
 withDefaults(defineProps<Props>(), {
   active: false
 });
 
-/** * Madde 3b: Sadece Nuxt/Vue yapıları.
- * Tıklama olayını (emit) tanımlıyoruz.
- */
+//Sadece Nuxt/Vue yapıları.
 defineEmits<{
   (e: 'click'): void
 }>();

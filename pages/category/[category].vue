@@ -1,25 +1,16 @@
 <script setup lang="ts">
-/** * Madde 3b: Nuxt 3 otomatik import özelliği sayesinde ref, computed ve onMounted 
- * manuel import edilmeden kullanılır.
- */
 const route = useRoute()
 const productStore = useProductStore()
-
-// URL'deki parametre ismini yakala (kadin, erkek, cocuk)
 const categoryId = computed(() => route.params.category as string)
 
-// Sayfa yüklendiğinde ve kategori her değiştiğinde veriyi Firestore'dan çek
 watch(() => categoryId.value, async (newVal) => {
   if (newVal) {
-    // Madde 1b: Firestore sorgusu store üzerinden tetiklenir
     await productStore.fetchProductsByGender(newVal as string)
   }
 }, { immediate: true })
 
-// Store'daki filtrelenmiş ürünleri sayfaya bağla
 const products = computed(() => productStore.filteredProducts)
 const handleFilterChange = (selectedFilters: any) => {
-  // Store'daki filtreleme aksiyonunu çağırıyoruz
   productStore.fetchFilteredProducts({
     gender: route.params.category as string,
     categories: selectedFilters.categories,

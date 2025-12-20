@@ -1,25 +1,19 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Propsları 'defineProps' ile tanımlayarak tip güvenliği sağlıyoruz.
- */
+//TypeScript interface kullanımı.
 interface Props {
   variant?: 'primary' | 'secondary' | 'outline';
   size?: 'small' | 'medium' | 'large';
   fullWidth?: boolean;
   disabled?: boolean;
 }
-
-// Varsayılan değerlerle birlikte props tanımlama
+//Varsayılan değerlerle birlikte props 
 withDefaults(defineProps<Props>(), {
   variant: 'primary',
   size: 'medium',
   fullWidth: false,
   disabled: false
 });
-
-
-/** * Madde 3b: Sadece Nuxt/Vue yapıları kullanılıyor.
- */
+//Sadece Nuxt/Vue yapıları 
 defineEmits<{
   (e: 'click'): void
 }>();

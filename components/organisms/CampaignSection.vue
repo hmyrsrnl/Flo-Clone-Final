@@ -1,13 +1,11 @@
 <script setup lang="ts">
-/** * Madde 3b: Nuxt otomatik importları sayesinde manuel import satırı kullanmıyoruz.
- * Sadece 'use' ile başlayan store ve route fonksiyonlarını çağırıyoruz.
- */
+//Sadece 'use' ile başlayan store ve route fonksiyonlarını çağır
 const productStore = useProductStore();
 const router = useRouter();
 
-// Firestore'dan gelen verileri kategorize ediyoruz
-const sliderCampaigns = computed(() => productStore.sliderData); // 'campaign' koleksiyonundan gelir
-const discountCampaigns = computed(() => productStore.products.slice(0, 2)); // Örnek olarak ürünlerden çekilebilir
+// Firestore'dan gelen verileri kategorize et
+const sliderCampaigns = computed(() => productStore.sliderData); 
+const discountCampaigns = computed(() => productStore.products.slice(0, 2)); 
 
 const goToCampaign = (link: string) => {
   router.push(link);
@@ -94,8 +92,8 @@ const goToCampaign = (link: string) => {
 :deep(.campaign-card img) {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Oranı koruyarak doldurur */
-  object-position: right center; /* Sağ tarafın görünmesi için odağı sağa kaydırır */
+  object-fit: cover; 
+  object-position: right center; 
 }
 .discount-campaigns {
   display: grid;

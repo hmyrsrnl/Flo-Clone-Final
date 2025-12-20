@@ -1,23 +1,24 @@
 <script setup lang="ts">
-/** * Madde 3b: Sadece 'use' ile başlayan importlar kalmalı.
- */
 const route = useRoute()
 const productStore = useProductStore()
-
-// Sayfa yüklendiğinde Firebase'den ürünleri çek
 onMounted(async () => {
   await productStore.fetchProducts()
 })
 
-// Filtreleme mantığını store üzerinden computed olarak alıyoruz
-const filteredProducts = computed(() => {
-  const categoryId = route.params.id as string
-  if (!categoryId) {
-    return productStore.products;
-  }
-  
-  // Kategori seçilmişse filtrele
-  return productStore.getProductsByCategory(categoryId);
+const onFilterUpdate = async (newFilters: any) => {
+  await productStore.fetchFilteredProducts({
+    ...newFilters,
+    gender: route.params.id || '' 
+  })
+}
+
+onMounted(async () => {
+  await productStore.fetchProducts()
+  await productStore.fetchFilteredProducts({ 
+    categories: [], 
+    brands: [], 
+    sizes: [] 
+  })
 })
 </script>
 
@@ -28,19 +29,17 @@ const filteredProducts = computed(() => {
         <aside class="filter-sidebar">
           <OrganismsProductFilter 
             :categories="productStore.filterCategories"
-            @filter-change="productStore.handleFilterChange"
+            @filter-change="onFilterUpdate" 
           />
         </aside>
+
         <main class="product-content">
-          <div class="content-header">
-            <h1 class="page-title">{{ route.params.id }} Ürünler</h1>
-            <div class="results-info">
-              <span>{{ filteredProducts.length }} ürün listeleniyor</span>
-            </div>
+          <div class="results-info">
+            <span>{{ productStore.filteredProducts.length }} ürün listeleniyor</span>
           </div>
           
           <OrganismsProductGrid 
-            :products="filteredProducts"
+            :products="productStore.filteredProducts" 
           />
         </main>
       </div>

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * Sepet özeti verileri için yapısal tip tanımı.
- */
+//TypeScript interface kullanımı.
 interface ISummaryData {
   subtotal: number;
   discount: number;
@@ -18,9 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
   itemCount: 0
 });
 
-/** * Madde 3b: Nuxt 3 otomatik içe aktarma.
- * Fiyat formatlama ve emit tanımı.
- */
 defineEmits<{
   (e: 'checkout'): void
 }>();

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-/** * Madde 3a: TypeScript interface kullanımı.
- * types/index.ts dosyasındaki IProduct tipini import ediyoruz.
- */
+//TypeScript interface kullanımı.
 import type { IProduct } from '~/types'
 
 interface Props {
@@ -12,9 +10,7 @@ const props = withDefaults(defineProps<Props>(), {
   products: () => []
 });
 
-/** * Madde 3b: Nuxt 3 otomatik içe aktarma.
- * Tıklama olayını tanımlıyoruz.
- */
+//Nuxt 3 otomatik içe aktarma.
 defineEmits<{
   (e: 'product-click', product: IProduct): void
 }>();

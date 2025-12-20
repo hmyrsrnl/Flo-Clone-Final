@@ -1,12 +1,17 @@
 <script setup lang="ts">
-/** * Madde 3b: Nuxt 3 otomatik içe aktarma sayesinde computed ve store'lar import edilmez. */
-import { menuData } from '~/data/menuData'
+import type { or } from 'firebase/firestore'
 
+//import { menuData } from '~/data/menuData'
 const cartStore = useCartStore()
 const authStore = useAuthStore()
+const menuStore = useMenuStore()
 
-/** * Madde 2d & 3a: Sepetteki ürün sayısını dinamik olarak takip ediyoruz. */
+//Sepetteki ürün sayısını dinamik olarak takip et
 const cartItemCount = computed(() => cartStore?.cartItems?.length || 0)
+
+onMounted(async () => {
+  await menuStore.fetchNavigationMenu()
+})
 
 const handleSearch = (event: Event) => {
   const target = event.target as HTMLInputElement
@@ -73,12 +78,18 @@ const handleSearch = (event: Event) => {
     <div class="sub-nav">
       <div class="container sub-container">
         <nav class="sub-categories">
-          <OrganismsMegaMenu title="Ayakkabı" :menu-data="menuData.ayakkabi" />
-          <OrganismsMegaMenu title="Spor" :menu-data="menuData.spor" />
-          <OrganismsMegaMenu title="Giyim" :menu-data="menuData.giyim" />
-          <OrganismsMegaMenu title="Çanta ve Aksesuar" :menu-data="menuData.canta" />
-          <OrganismsMegaMenu title="Markalar" :menu-data="menuData.markalar" />
-          <OrganismsMegaMenu   title="İndirim" :menu-data="menuData.indirim" />
+          <OrganismsMegaMenu v-if="menuStore.navigationMenu.ayakkabı" title="Ayakkabı"
+            :menu-data="menuStore.navigationMenu.ayakkabı" />
+          <OrganismsMegaMenu v-if="menuStore.navigationMenu.spor" title="Spor"
+            :menu-data="menuStore.navigationMenu.spor" />
+          <OrganismsMegaMenu v-if="menuStore.navigationMenu.giyim" title="Giyim"
+            :menu-data="menuStore.navigationMenu.giyim" />    
+          <OrganismsMegaMenu v-if="menuStore.navigationMenu.çanta" title="Çanta ve Aksesuar"
+            :menu-data="menuStore.navigationMenu.çanta" />  
+          <OrganismsMegaMenu v-if="menuStore.navigationMenu.markalar" title="Markalar"
+            :menu-data="menuStore.navigationMenu.markalar" />
+          <OrganismsMegaMenu v-if="menuStore.navigationMenu.indirim" title="İndirimler"
+            :menu-data="menuStore.navigationMenu.indirim" />
           <NuxtLink to="/products" class="simple-link">Tüm Kategoriler</NuxtLink>
         </nav>
       </div>
@@ -88,9 +99,9 @@ const handleSearch = (event: Event) => {
 
 <style scoped>
 .container {
-  max-width: 1200px; 
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px; 
+  padding: 0 20px;
 }
 
 .header {
@@ -114,7 +125,7 @@ const handleSearch = (event: Event) => {
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px; 
+  padding: 0 20px;
 }
 
 .top-links {
@@ -122,7 +133,7 @@ const handleSearch = (event: Event) => {
   gap: 8px;
 }
 
-.sub-categories > *:not(.simple-link) {
+.sub-categories>*:not(.simple-link) {
   flex: 1;
   text-align: center;
   height: 100%;
@@ -148,9 +159,9 @@ a {
   justify-content: space-between;
   align-items: center;
   gap: 25px;
-  max-width: 1200px; 
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px; 
+  padding: 0 20px;
 }
 
 .logo h1 {
@@ -180,7 +191,7 @@ a {
 .search-section {
   flex: 1;
   max-width: 600px;
-   margin: 0 20px; 
+  margin: 0 20px;
 }
 
 .search-box {
@@ -209,7 +220,7 @@ a {
   display: flex;
   align-items: center;
   gap: 18px;
-   flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .icon-btn {
@@ -263,11 +274,11 @@ a {
   justify-content: flex-start;
   font-weight: 600;
   height: 40px;
-  flex-wrap: nowrap; 
-  min-width: max-content; 
+  flex-wrap: nowrap;
+  min-width: max-content;
 }
 
-.sub-categories > * {
+.sub-categories>* {
   display: flex;
   align-items: center;
   height: 100%;
@@ -284,8 +295,8 @@ a {
 .sub-categories a {
   color: #333;
   font-size: 15px;
-  font-weight: 600; 
-  
+  font-weight: 600;
+
 }
 
 .sub-categories a:hover,
@@ -301,17 +312,17 @@ a {
 }
 
 .logo-image {
-  height: 45px; 
-  width: auto; 
+  height: 45px;
+  width: auto;
   display: block;
   object-fit: contain;
-  
+
 }
 
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 25px; 
+  gap: 25px;
   flex-shrink: 0;
 }
 </style>

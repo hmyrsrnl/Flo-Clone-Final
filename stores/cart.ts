@@ -12,19 +12,13 @@ export const useCartStore = defineStore('cart', {
   }),
 
   getters: {
-    /**
-     * 🔢 Toplam ürün adedi
-     */
+    //Toplam ürün adedi
     totalItems: (state): number => 
       state.cartItems.reduce((sum: number, item: ICartItem) => sum + item.quantity, 0),
-    
-    /**
-     * 💰 Toplam Sepet Tutarı (Matematiksel hata burada çözüldü)
-     * 'Number(item.price)' kullanarak değerin sayı olmasını garanti ediyoruz.
-     */
+    //Toplam Sepet Tutarı
     cartTotal: (state): number => 
       state.cartItems.reduce((total: number, item: ICartItem) => {
-        const price = Number(item.price) || 0; // Eğer price sayı değilse 0 kabul et
+        const price = Number(item.price) || 0; 
         return total + (price * item.quantity);
       }, 0)
   },
@@ -35,9 +29,8 @@ export const useCartStore = defineStore('cart', {
         localStorage.setItem('shopping-cart', JSON.stringify(this.cartItems));
       }
     },
-    /**
-     * 🛒 Sepete Ekleme (Opsiyonel parametre desteği ile)
-     */
+
+    //Sepete Ekleme
     addToCart(product: IProduct, selectedSize?: string | number) {
       const sizeToRecord = selectedSize || 'Standart'
       
@@ -56,25 +49,20 @@ export const useCartStore = defineStore('cart', {
       }
       this.saveCart()
     },
-    /**
-     * 📏 Sepetteki ürünün bedenini günceller
-     */
+
+    //Sepetteki ürünün bedenini günceller
     updateSize(itemId: string | number, newSize: string | number) {
       const item = this.cartItems.find((i : ICartItem) => i.id === itemId);
       
       if (item) {
-        item.selectedSize = newSize; // Beden bilgisini güncelle
-        
-        // Madde 1b: LocalStorage senkronizasyonu
+        item.selectedSize = newSize; 
         if (process.client) {
           localStorage.setItem('shopping-cart', JSON.stringify(this.cartItems));
         }
       }
     },
 
-    /**
-     * 📝 Firestore'a Veri Yazma (Madde 1b uyumlu)
-     */
+    //Firestore'a Veri Yazma 
     async checkout() {
       if (this.cartItems.length === 0 || !process.client) return false
       
@@ -82,9 +70,8 @@ export const useCartStore = defineStore('cart', {
       const { $db } = useNuxtApp()
 
       try {
-        // 'orders' tablosuna (koleksiyonuna) yeni sipariş ekler
         const docRef = await addDoc(collection($db as any, 'orders'), {
-          items: JSON.parse(JSON.stringify(this.cartItems)), // Proxy hatasını önlemek için
+          items: JSON.parse(JSON.stringify(this.cartItems)), 
           totalPrice: this.cartTotal,
           createdAt: serverTimestamp(),
           status: 'Hazırlanıyor'

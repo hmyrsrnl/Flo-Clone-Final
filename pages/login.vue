@@ -1,19 +1,16 @@
 <script setup lang="ts">
-/** * Madde 2c: Giriş sayfası için özel auth layout kullanımı.
- */
-
 definePageMeta({
   layout: 'auth'
 })
 
-const authStore = useAuthStore() // Pinia store
+const authStore = useAuthStore() 
 const router = useRouter()
 
 const handleLogin = async (credentials: any) => {
   const success = await authStore.login(credentials)
   if (success) {
-    await authStore.fetchUserProfile(); // Firestore'dan bilgileri al
-    navigateTo('/profile'); // Madde 2a: Yönlendirme
+    await authStore.fetchUserProfile(); 
+    navigateTo('/profile'); 
   } else {
     alert('Hatalı giriş!');
   }

@@ -4,21 +4,20 @@ import type { IProduct } from '../types'
 import { useNuxtApp } from 'nuxt/app'
 import type { ICampaign } from '~/types'
 
-// stores/products.ts güncellemesi
 export const useProductStore = defineStore('products', {
   state: () => ({
     products: [] as IProduct[],
-    sliderData: [] as any[], // Tip tanımı eklenebilir
+    sliderData: [] as any[],
     loading: false,
-    heroSlides: [] as any[], // Ana slider için
-    campaignSlides: [] as any[], // Mini slider için
+    heroSlides: [] as any[],
+    campaignSlides: [] as any[],
     campaigns: [] as ICampaign[],
     campaignCards: [] as any[],
     currentProduct: null as IProduct | null,
     filteredProducts: [] as any[],
     filterCategories: [
-      { label: 'Ayakkabı', value: 'ayakkabi' },
-      { label: 'Bot', value: 'bot' }
+      { label: 'Ayakkabı', value: 'Ayakkabı' },
+      { label: 'Bot', value: 'Bot' }
     ],
     selectedFilters: {
       priceRange: [0, 10000],
@@ -27,60 +26,62 @@ export const useProductStore = defineStore('products', {
 
   }),
   getters: {
-    // Kategoriye göre filtreleme metodu (image_7a2bdd.png hatası için)
+    // Kategoriye göre filtreleme
     getProductsByCategory: (state) => (catId: string) => {
       return state.products.filter(p => p.category === catId)
     }
   },
   actions: {
-
-    // stores/products.ts içindeki fetchFilteredProducts action'ını güncelle
     async fetchFilteredProducts(filters: any) {
       this.loading = true;
       const { $db } = useNuxtApp();
 
       try {
+        const hasCategory = filters.categories && filters.categories.length > 0;
+        const hasBrand = filters.brands && filters.brands.length > 0;
+        const hasSize = filters.sizes && filters.sizes.length > 0;
+        if (!hasCategory && !hasBrand && !hasSize) {
+          await this.fetchProducts();
+          this.filteredProducts = [...this.products];
+          return;
+        }
+
         let q = query(collection($db as any, 'products'));
 
-        // Cinsiyet Filtresi
-        if (filters.gender) {
-          q = query(q, where('gender', 'array-contains', filters.gender.toLowerCase()));
+        if (hasCategory) {
+          q = query(q, where('category', 'in', filters.categories));
         }
 
-        // Beden Filtresi (Görselde 'sizes' dizi olarak tutuluyor)
-        if (filters.sizes && filters.sizes.length > 0) {
-          // Not: Firestore'da tek bir sorguda birden fazla 'array-contains' yapılamaz.
-          // Eğer gender array-contains ise, sizes filtresini client-side'da yapmalısın.
-          q = query(q, where('sizes', 'array-contains-any', filters.sizes));
-        }
-
-        // Marka Filtresi
-        if (filters.brands && filters.brands.length > 0) {
+        if (hasBrand) {
           q = query(q, where('brand', 'in', filters.brands));
         }
 
-        const querySnapshot = await getDocs(q);
-        let results = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-        // Fiyat Filtresi (Firestore 'where' ile price > min yapmak için Index gerekir)
-        // En garantisi client-side filtrelemedir:
-        if (filters.priceRange) {
-          results = results.filter((p: any) => {
-            const pPrice = Number(p.price);
-            return pPrice >= filters.priceRange.min && pPrice <= filters.priceRange.max;
-          });
+        if (hasSize) {
+          q = query(q, where('sizes', 'array-contains-any', filters.sizes));
         }
+        const querySnapshot = await getDocs(q);
+        this.filteredProducts = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            imageUrl: data.image || data.imageUrl || ''
+          };
+        });
 
-        this.filteredProducts = results;
-      } catch (error: any) {
-        console.error("Filtreleme hatası:", error);
-      } finally { this.loading = false; }
+      } catch (error) {
+        console.error("Filtreleme sırasında hata:", error);
+        this.filteredProducts = [...this.products];
+      } finally {
+        this.loading = false;
+      }
     },
+
     handleFilterChange(filters: any) {
       console.log("Filtreler güncellendi:", filters)
-      // Burada filtreleme mantığını yazabilirsin
     },
-    // Madde 2a: Firestore sorgusu action içinde olmalı.
+
+    //Firestore sorgusu action içinde olmalı.
     async fetchProductById(id: string) {
       const { $db } = useNuxtApp()
       this.loading = true
@@ -94,20 +95,13 @@ export const useProductStore = defineStore('products', {
           this.currentProduct = {
             id: docSnap.id,
             ...data,
-            // Ana resmi temizliyoruz
             imageUrl: (data.image || '').toString().replace(/"/g, ''),
-
-            // Ek resimler dizisindeki tırnakları temizleyerek map'liyoruz
             images: data.images ? data.images.map((img: string) => img.replace(/"/g, '')) : [],
-
-            // Renk seçeneklerini (Map yapısını) TypeScript'e tanıtıyoruz
             colors: (data.colors || []).map((color: any) => ({
               name: color.name,
-              image: color.image?.replace(/"/g, ''), // Renk küçük resmindeki tırnakları temizle
+              image: color.image?.replace(/"/g, ''),
               productId: color.productId
             })),
-
-            // Beden dizisini alıyoruz
             sizes: data.sizes || []
           } as IProduct
         }
@@ -117,7 +111,7 @@ export const useProductStore = defineStore('products', {
         this.loading = false
       }
     },
-    // stores/products.ts içindeki fetchProductsByGender aksiyonu
+
     async fetchProductsByGender(genderName: string) {
       this.loading = true
       const { $db } = useNuxtApp()
@@ -125,19 +119,18 @@ export const useProductStore = defineStore('products', {
       try {
         const { collection, getDocs, query, where } = await import('firebase/firestore')
 
-        // Madde 1b: 'array-contains' kullanarak unisex ürünleri de yakalıyoruz
+        //Unisex ürünleri de yakalıyoruz
         const q = query(
           collection($db as any, 'products'),
           where('gender', 'array-contains', genderName.toLowerCase())
         )
-
         const querySnapshot = await getDocs(q)
         this.filteredProducts = querySnapshot.docs.map(doc => {
           const data = doc.data()
           return {
             id: doc.id,
             ...data,
-            imageUrl: data.image || '', // Görsellerin görünmesi için gerekli
+            imageUrl: data.image || '',
             price: data.price || 0
           }
         })
@@ -147,12 +140,12 @@ export const useProductStore = defineStore('products', {
         this.loading = false
       }
     },
+
     async fetchProducts() {
       const { $db } = useNuxtApp();
       this.loading = true;
       try {
         const querySnapshot = await getDocs(collection($db as any, 'products'));
-
         this.products = querySnapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -177,8 +170,7 @@ export const useProductStore = defineStore('products', {
 
     async fetchCampaigns() {
       this.loading = true
-      const { $db } = useNuxtApp() // Nuxt Firebase plugin kullanımı
-
+      const { $db } = useNuxtApp()
       try {
         const querySnapshot = await getDocs(collection($db as any, 'campaigns'))
         this.campaigns = querySnapshot.docs.map(doc => ({
@@ -202,11 +194,9 @@ export const useProductStore = defineStore('products', {
         const allSlides = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
-          sliderType: doc.data().sliderType || 'campaign', // Varsayılan olarak 'hero'
+          sliderType: doc.data().sliderType || 'campaign',
           image: doc.data().image || doc.data().imageUrl || ''
         }));
-
-        // Verileri tiplerine göre ayırıyoruz
         this.heroSlides = allSlides.filter(s => s.sliderType === 'hero');
         this.campaignSlides = allSlides.filter(s => s.sliderType === 'campaign');
         this.campaignCards = allSlides.filter(s => s.sliderType === 'card');
@@ -215,8 +205,5 @@ export const useProductStore = defineStore('products', {
         console.error("Slider verisi ayrıştırma hatası:", error);
       }
     }
-
-
-
   }
 })
