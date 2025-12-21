@@ -9,6 +9,14 @@ watch(() => categoryId.value, async (newVal) => {
   }
 }, { immediate: true })
 
+const onFilterUpdate = async (newFilters: any) => {
+  await productStore.fetchFilteredProducts({
+    ...newFilters,
+    gender: route.params.id || '' 
+  })
+}
+
+
 const products = computed(() => productStore.filteredProducts)
 const handleFilterChange = (selectedFilters: any) => {
   productStore.fetchFilteredProducts({
@@ -28,29 +36,20 @@ const handleFilterChange = (selectedFilters: any) => {
         <aside class="filter-sidebar">
           <OrganismsProductFilter 
             :categories="productStore.filterCategories"
-            @filter-change="productStore.handleFilterChange"
+            @filter-change="onFilterUpdate" 
           />
         </aside>
 
         <main class="product-content">
-          <div class="content-header">
-            <h1 class="page-title">
-              {{ categoryId?.toUpperCase() }} Koleksiyonu
-            </h1>
-            <div class="results-info">
-              <span>{{ products.length }} ürün listeleniyor</span>
-            </div>
+          <div class="results-info">
+            <span>{{ productStore.filteredProducts.length }} ürün listeleniyor</span>
           </div>
           
-          <div v-if="productStore.loading" class="loading-state">
-             Ürünler yükleniyor...
-          </div>
-
           <OrganismsProductGrid 
-            v-else
-            :products="products"
+            :products="productStore.filteredProducts" 
           />
 
+        
           <div v-if="!productStore.loading && products.length === 0" class="no-results">
             Bu kategoride henüz ürün bulunamadı.
           </div>

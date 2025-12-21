@@ -5,20 +5,20 @@ import type { ICartItem, IProduct } from '../types'
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
-    cartItems: (typeof window !== 'undefined' && localStorage.getItem('shopping-cart')) 
-    ? JSON.parse(localStorage.getItem('shopping-cart')!) 
-    : [] as ICartItem[],
+    cartItems: (typeof window !== 'undefined' && localStorage.getItem('shopping-cart'))
+      ? JSON.parse(localStorage.getItem('shopping-cart')!)
+      : [] as ICartItem[],
     loading: false
   }),
 
   getters: {
     //Toplam ürün adedi
-    totalItems: (state): number => 
+    totalItems: (state): number =>
       state.cartItems.reduce((sum: number, item: ICartItem) => sum + item.quantity, 0),
     //Toplam Sepet Tutarı
-    cartTotal: (state): number => 
+    cartTotal: (state): number =>
       state.cartItems.reduce((total: number, item: ICartItem) => {
-        const price = Number(item.price) || 0; 
+        const price = Number(item.price) || 0;
         return total + (price * item.quantity);
       }, 0)
   },
@@ -30,10 +30,12 @@ export const useCartStore = defineStore('cart', {
       }
     },
 
+
+
     //Sepete Ekleme
     addToCart(product: IProduct, selectedSize?: string | number) {
       const sizeToRecord = selectedSize || 'Standart'
-      
+
       const existingItem = this.cartItems.find(
         (item: ICartItem) => item.id === product.id && item.selectedSize === sizeToRecord
       )
@@ -52,10 +54,10 @@ export const useCartStore = defineStore('cart', {
 
     //Sepetteki ürünün bedenini günceller
     updateSize(itemId: string | number, newSize: string | number) {
-      const item = this.cartItems.find((i : ICartItem) => i.id === itemId);
-      
+      const item = this.cartItems.find((i: ICartItem) => i.id === itemId);
+
       if (item) {
-        item.selectedSize = newSize; 
+        item.selectedSize = newSize;
         if (process.client) {
           localStorage.setItem('shopping-cart', JSON.stringify(this.cartItems));
         }
@@ -65,13 +67,20 @@ export const useCartStore = defineStore('cart', {
     //Firestore'a Veri Yazma 
     async checkout() {
       if (this.cartItems.length === 0 || !process.client) return false
-      
+
       this.loading = true
       const { $db } = useNuxtApp()
+      const authStore = useAuthStore()
+      const orderData = {
+        userId: authStore.user?.uid, 
+        items: this.cartItems,
+        total: this.cartTotal,
+        createdAt: new Date()
+      }
 
       try {
         const docRef = await addDoc(collection($db as any, 'orders'), {
-          items: JSON.parse(JSON.stringify(this.cartItems)), 
+          items: JSON.parse(JSON.stringify(this.cartItems)),
           totalPrice: this.cartTotal,
           createdAt: serverTimestamp(),
           status: 'Hazırlanıyor'

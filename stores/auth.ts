@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { doc, setDoc, getFirestore } from 'firebase/firestore'
+import { doc, setDoc, getFirestore, getDoc } from 'firebase/firestore'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -28,8 +28,11 @@ export const useAuthStore = defineStore('auth', {
 
       const { $auth } = useNuxtApp()
 
-      onAuthStateChanged($auth as any, (user) => {
+      onAuthStateChanged($auth as any, async (user) => {
         this.user = user
+        if (user) {
+          await this.fetchUserProfile()
+        }
         this.initialized = true
       })
     },
@@ -103,13 +106,13 @@ export const useAuthStore = defineStore('auth', {
         this.user = user;
         return true;
       } catch (error: any) {
-        alert("Firebase Hatası: " + error.message); 
+        alert("Firebase Hatası: " + error.message);
         return false;
       } finally {
         this.loading = false;
       }
     },
-    
+
     //Çıkış Yap
     async logout() {
       if (!process.client) return
@@ -127,7 +130,6 @@ export const useAuthStore = defineStore('auth', {
       if (!this.user?.uid) return
 
       try {
-        const { getDoc, doc } = await import('firebase/firestore')
         const docRef = doc($db as any, 'users', this.user.uid)
         const docSnap = await getDoc(docRef)
 

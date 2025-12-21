@@ -1,7 +1,8 @@
 <script setup lang="ts">
 //Nuxt 3 otomatik içe 
-const authStore = useAuthStore() 
+const authStore = useAuthStore()
 const isOpen = ref(false)
+const orderStore = useOrderStore()
 let closeTimeout: ReturnType<typeof setTimeout> | null = null
 
 const openDropdown = () => {
@@ -19,18 +20,14 @@ const closeDropdown = () => {
 }
 
 const handleLogout = () => {
-  authStore.logout() 
+  authStore.logout()
   isOpen.value = false
-  navigateTo('/login') 
+  navigateTo('/login')
 }
 </script>
 
 <template>
-  <div 
-    class="account-dropdown" 
-    @mouseenter="openDropdown" 
-    @mouseleave="closeDropdown"
-  >
+  <div class="account-dropdown" @mouseenter="openDropdown" @mouseleave="closeDropdown">
     <div class="dropdown-trigger">
       <slot name="trigger">
         <div class="nav-item">
@@ -46,12 +43,14 @@ const handleLogout = () => {
       </div>
       <div class="menu-divider"></div>
       <div class="menu-section">
-        <div class="menu-item">Tüm Siparişlerim</div>
-        
+        <NuxtLink to="/orders" class="menu-item" @click="closeDropdown">
+          Siparişlerim
+        </NuxtLink>
+        <div class="menu-divider"></div>
         <NuxtLink to="/profile" class="menu-item" @click="closeDropdown">
           Kullanıcı Bilgilerim
         </NuxtLink>
-        
+
         <div class="menu-divider"></div>
         <div class="menu-item" @click="handleLogout">Çıkış</div>
       </div>
@@ -86,7 +85,7 @@ const handleLogout = () => {
   background: white;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   min-width: 280px;
   z-index: 1000;
   margin-top: 8px;
@@ -154,6 +153,7 @@ const handleLogout = () => {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

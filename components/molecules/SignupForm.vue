@@ -89,6 +89,7 @@ const handleSubmit = () => {
 
     <AtomsButton type="submit" variant="primary" size="large" :disabled="!isFormValid"
       @click="handleSubmit" :fullWidth="true">ÜYE OL</AtomsButton>
+      
 
       
   </form>

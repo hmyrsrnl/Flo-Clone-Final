@@ -1,7 +1,7 @@
 export interface IColorVariant {
-  productId: string; 
-  image: string;     
-  name: string;  
+  productId: string;
+  image: string;
+  name: string;
 }
 
 export interface IProduct {
@@ -15,16 +15,16 @@ export interface IProduct {
   color?: string;
   colors?: IColorVariant[];
   category?: string;
-  oldPrice?: number;  
-  imageUrl: string;   
-  selectedSize: string | number; 
+  oldPrice?: number;
+  imageUrl: string;
+  selectedSize: string | number;
   size?: string | number;
   sizes: (string | number)[];
   selected?: boolean;
-  rating: number;     
+  rating: number;
   reviewCount: number;
-  addedCount?: number;features?: {
-    [key: string]: string; 
+  addedCount?: number; features?: {
+    [key: string]: string;
   };
 }
 
@@ -67,7 +67,7 @@ export interface ICampaign {
   image: string;
   imageUrl: string;
   link: string;
-  title: string; 
+  title: string;
   sliderType?: 'hero' | 'campaign';
 }
 
@@ -86,3 +86,27 @@ export interface IMenu {
     items: string[];
   }[];
 }
+
+export interface IOrderItem {
+  id: string;
+  name: string;
+  totalPrice: number;
+  quantity: number;
+  selectedSize: string | number;
+  imageUrl: string;
+}
+
+export interface IOrder {
+  id: string;
+  userId: string; 
+  items: IOrderItem[];
+  totalPrice: number;
+  status: 'Hazirlaniyor' | 'Kargoya Verildi' | 'Teslim Edildi' | 'İptal Edildi';
+  createdAt: any; 
+}
+
+export interface IFilterCategory {
+  label: string;
+  value: string;
+}
+

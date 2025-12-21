@@ -40,7 +40,10 @@ const onSocialLogin = (provider: string) => emit('social-login', provider)
 
       <div class="social-buttons">
         <AtomsButton @click="onSocialLogin('google')" variant="outline" class="google-button">Google</AtomsButton>
+        <AtomsButton @click="onSocialLogin('apple')" variant="outline" class="apple-button">Apple</AtomsButton>
+        <AtomsButton @click="onSocialLogin('facebook')" variant="outline" class="facebook-button">Facebook</AtomsButton>
       </div>
+      
     </div>
   </div>
 </template>

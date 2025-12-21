@@ -7,12 +7,17 @@ onMounted(() => {
   productStore.fetchProducts() 
 })
 const handleCheckout = async () => {
-  const isSuccess = await cartStore.checkout() 
-  if (isSuccess) {
-    alert('Siparişiniz başarıyla alındı!')
-    navigateTo('/') 
+  const finalTotal = cartStore.cartTotal + (cartStore.cartTotal > 1750 ? 0 : 69.99);
+  
+  try {
+    await orderStore.createOrder(cartStore.cartItems, finalTotal); 
+    cartStore.clearCart();
+    navigateTo('/orders');
+  } catch (error) {
+    console.error("Sipariş sırasında hata oluştu:", error);
+    alert("Sipariş oluşturulamadı!");
   }
-}
+};
 </script>
 
 <template>
@@ -73,9 +78,23 @@ const handleCheckout = async () => {
 
 <style scoped>
 
-.empty-cart-container {
-  text-align: center;
-  padding: 60px 0;
+.empty-cart-state {
+  max-width: 1200px; 
+  margin: 0 auto;    
+  padding: 40px 20px; 
+  text-align: left;  
+}
+
+.empty-cart-state p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.go-home-btn {
+  color: #ff6000;
+  text-decoration: underline;
+  font-weight: 500;
 }
 .shopping-btn {
   display: inline-block;
