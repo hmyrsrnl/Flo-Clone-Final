@@ -36,5 +36,5 @@ Bu proje;
 - Firebase ile veritabanı entegrasyonu
 - Component tabanlı frontend mimarisi
 - Dinamik veri kullanımı
--Web programlama dersi kapsamında e-ticaret uygulaması geliştirme
+- Web programlama dersi kapsamında e-ticaret uygulaması geliştirme
 amaçlarıyla hazırlanmıştır.
