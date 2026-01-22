@@ -1,75 +1,40 @@
-# Nuxt Minimal Starter
+# Flo Clone Final – E-Ticaret Arayüz Proje Finali
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Bu proje, **Vue 3 + Nuxt 3** kullanılarak geliştirilmiş bir **e-ticaret arayüz projesi**dir.  
+Web Programlama dersi kapsamında hazırlanan bu proje, gerçek bir e-ticaret sitesinin
+ön yüz tasarımını ve temel kullanıcı etkileşimlerini göstermektedir.
 
-## Setup
+---
 
-Make sure to install dependencies:
+## Özellikler
 
-```bash
-# npm
-npm install
+- Vue 3 & Nuxt 3 ile modern frontend geliştirme
+- Firebase Firestore kullanılarak veritabanı entegrasyonu
+- Ürün listeleme ve kategori sayfaları
+- Component tabanlı mimari
+- Responsive (mobil uyumlu) tasarım
+- Sayfa yönlendirmeleri (routing)
+- Frontend & veritabanı entegrasyonu
 
-# pnpm
-pnpm install
+---
 
-# yarn
-yarn install
+## Kullanılan Teknolojiler
 
-# bun
-bun install
-```
+- **Frontend:** Vue 3, Nuxt 3, TypeScript  
+- **Stil:** CSS / Tailwind CSS  
+- **Veritabanı:** Firebase (Firestore)  
+- **State Yönetimi:** Pinia / Nuxt composables  
+- **Build Tool:** Vite  
+- **Versiyon Kontrol:** Git, GitHub 
 
-## Development Server
+---
 
-Start the development server on `http://localhost:3000`:
+## Proje Amacı
 
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Bu proje;
+- Nuxt 3 ile modern web uygulaması geliştirme
+- Firebase ile veritabanı entegrasyonu
+- Component tabanlı frontend mimarisi
+- Dinamik veri kullanımı
+-Web programlama dersi kapsamında e-ticaret uygulaması geliştirme
+amaçlarıyla hazırlanmıştır.
